@@ -63,8 +63,8 @@ Spring Boot Vue.js LangChain4j Java
 - JDK 17+
 - Maven 3.6+
 - Node.js 16+
-- MySQL 8+
-- MongoDB 6+（未启动时后端仍可启动，但会有连接告警）
+- MySQL 8.0
+- MongoDB 6+（未启动时后端仍可启动）
 - 百炼 / DashScope API Key
 
 ### 1. 克隆项目
@@ -110,14 +110,6 @@ mvn -DskipTests spring-boot:run
 ```text
 http://localhost:8080
 ```
-
-接口示例：
-
-```text
-POST /xiaoyi/chat
-```
-
-Swagger / Knife4j 文档可在后端启动后自行访问对应页面查看。
 
 ### 4. 启动前端
 
