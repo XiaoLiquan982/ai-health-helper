@@ -1,16 +1,11 @@
 package com.atguigu.java.ai.langchain4j.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-    public class Appointment {
-    @TableId(type = IdType.AUTO)
+public class Appointment {
     private Long id;
     private String username;
     private String idCard;
@@ -18,4 +13,9 @@ import lombok.NoArgsConstructor;
     private String date;
     private String time;
     private String doctorName;
-    }
+    // 兼容大模型可能使用的字段名
+    private String name;
+    private String idNumber;
+    private String hospital;
+    private String doctor;
+}

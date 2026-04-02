@@ -11,13 +11,27 @@ public class AppointmentTools {
     private AppointmentService appointmentService;
 
     @Tool(name="预约挂号", value = "根据参数，先执行工具方法queryDepartment查询是否可预约，并直接给用户回答是否可预约，并让用户确认所有预约信息，用户确认后再进行预约。如果用户没有提供具体的医生姓名，请从向量存储中找到一位医生。")
-    public String bookAppointment(Appointment appointment){
+    public String bookAppointment(
+            @P(value = "姓名") String username,
+            @P(value = "身份证号") String idCard,
+            @P(value = "科室") String department,
+            @P(value = "日期") String date,
+            @P(value = "时间，可选值：上午、下午") String time,
+            @P(value = "医生姓名") String doctorName
+    ){
+        // 创建 Appointment 对象
+        Appointment appointment = new Appointment();
+        appointment.setUsername(username);
+        appointment.setIdCard(idCard);
+        appointment.setDepartment(department);
+        appointment.setDate(date);
+        appointment.setTime(time);
+        appointment.setDoctorName(doctorName);
 
         //查找数据库中是否包含对应的预约记录
         Appointment appointmentDB = appointmentService.getOne(appointment);
 
         if(appointmentDB == null){
-        appointment.setId(null);//防止大模型幻觉设置了id
             if(appointmentService.save(appointment)){
                 return "预约成功，并返回预约详情";
             }else{
@@ -28,7 +42,18 @@ public class AppointmentTools {
     }
 
     @Tool(name="取消预约挂号", value = "根据参数，查询预约是否存在，如果存在则删除预约记录并返回取消预约成功，否则返回取消预约失败")
-    public String cancelAppointment(Appointment appointment){
+    public String cancelAppointment(
+            @P(value = "姓名") String username,
+            @P(value = "科室") String department,
+            @P(value = "日期") String date,
+            @P(value = "时间，可选值：上午、下午") String time
+    ){
+        // 创建 Appointment 对象
+        Appointment appointment = new Appointment();
+        appointment.setUsername(username);
+        appointment.setDepartment(department);
+        appointment.setDate(date);
+        appointment.setTime(time);
 
         Appointment appointmentDB = appointmentService.getOne(appointment);
 
