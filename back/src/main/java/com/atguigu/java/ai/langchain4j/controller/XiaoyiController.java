@@ -1,7 +1,10 @@
 package com.atguigu.java.ai.langchain4j.controller;
 
 import com.atguigu.java.ai.langchain4j.assistant.XiaoyiAgent;
+import com.atguigu.java.ai.langchain4j.bean.AppointmentForm;
 import com.atguigu.java.ai.langchain4j.bean.ChatForm;
+import com.atguigu.java.ai.langchain4j.entity.Appointment;
+import com.atguigu.java.ai.langchain4j.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,20 @@ import reactor.core.publisher.Flux;
 public class XiaoyiController {
     @Autowired
     private XiaoyiAgent xiaoyiAgent;
+    
+    @Autowired
+    private AppointmentService appointmentService;
+    
     @Operation(summary = "对话")
     @PostMapping(value = "/chat", produces = "text/stream;charset=utf-8")
     public Flux<String> chat(@RequestBody ChatForm chatForm) {
         return xiaoyiAgent.chat(chatForm.getMemoryId(), chatForm.getMessage());
     }
+    
+    @Operation(summary = "挂号结果查询")
+    @PostMapping("/appointment/query")
+    public Appointment queryAppointment(@RequestBody AppointmentForm appointmentForm) {
+        return appointmentService.queryAppointment(appointmentForm.getName(), appointmentForm.getIdNumber());
+    }
 }
+
